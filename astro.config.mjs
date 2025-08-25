@@ -38,9 +38,10 @@ export default defineConfig({
           label: "Guides",
           items: [
             // { label: "Guides", slug: "guides/index" },
-            { label: "Control Panel", slug: "guides/wampoon-control" },
-            { label: "Dashboard", slug: "guides/wampoon-dashboard" },
-            { label: "Installer", slug: "guides/wampoon-installer" },
+            { label: "Configuring phpMyAdmin", slug: "guides/phpmyadmin" },
+            { label: "Wampoon Control Panel", slug: "guides/wampoon-control" },
+            { label: "Wampoon Dashboard", slug: "guides/wampoon-dashboard" },
+            { label: "Wampoon Installer", slug: "guides/wampoon-installer" },
           ],
         },
         {

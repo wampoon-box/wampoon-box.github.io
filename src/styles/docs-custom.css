@@ -1,6 +1,7 @@
-@layer Starlight, wampoon;
+@layer starlight, wampoon;
 
 @layer wampoon {
+
   /* Simple Starlight header background override */
   .header {
     background: rgba(28, 28, 30, 0.9) !important;

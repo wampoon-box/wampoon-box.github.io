@@ -1,0 +1,106 @@
+---
+title: "Configuring phpMyAdmin" 
+description: "How to configure phpMyAdmin with Wampoon"
+sidebar:
+  label: "Configuring phpMyAdmin"
+  order: 2
+---
+
+phpMyAdmin is a web-based tool for managing MySQL/MariaDB databases. It provides a user-friendly interface for creating, modifying, and deleting databases, tables, and records.
+
+## Enabling phpMyAdmin's Advanced Features
+
+:::caution[Prerequisites]
+ Apache and MariaDB must be running.
+:::
+
+Follow these steps to enable phpMyAdmin's advanced features in Wampoon:
+
+### Step 1: Access phpMyAdmin Configuration
+
+1. Navigate to your Wampoon installation directory
+2. Open the `apps/phpmyadmin/` folder
+3. Locate the `config.inc.php` file
+
+### Step 2: Enable Advanced Features
+
+1. Open `config.inc.php` in a text editor
+2. Find the `$cfg['Servers'][$i]` section
+3. Add or modify the following configuration options:
+
+```php
+// Enable advanced features
+$cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
+$cfg['Servers'][$i]['bookmarktable'] = 'pma__bookmark';
+$cfg['Servers'][$i]['relation'] = 'pma__relation';
+$cfg['Servers'][$i]['table_info'] = 'pma__table_info';
+$cfg['Servers'][$i]['table_coords'] = 'pma__table_coords';
+$cfg['Servers'][$i]['pdf_pages'] = 'pma__pdf_pages';
+$cfg['Servers'][$i]['column_info'] = 'pma__column_info';
+$cfg['Servers'][$i]['history'] = 'pma__history';
+$cfg['Servers'][$i]['table_uiprefs'] = 'pma__table_uiprefs';
+$cfg['Servers'][$i]['tracking'] = 'pma__tracking';
+$cfg['Servers'][$i]['userconfig'] = 'pma__userconfig';
+$cfg['Servers'][$i]['recent'] = 'pma__recent';
+$cfg['Servers'][$i]['favorite'] = 'pma__favorite';
+$cfg['Servers'][$i]['users'] = 'pma__users';
+$cfg['Servers'][$i]['usergroups'] = 'pma__usergroups';
+$cfg['Servers'][$i]['navigationhiding'] = 'pma__navigationhiding';
+$cfg['Servers'][$i]['savedsearches'] = 'pma__savedsearches';
+$cfg['Servers'][$i]['central_columns'] = 'pma__central_columns';
+$cfg['Servers'][$i]['designer_settings'] = 'pma__designer_settings';
+$cfg['Servers'][$i]['export_templates'] = 'pma__export_templates';
+```
+
+### Step 3: Create the Configuration Storage Database
+
+1. Open phpMyAdmin in your web browser
+2. Click on the "SQL" tab
+3. Run the following SQL commands to create the configuration storage:
+
+```sql
+CREATE DATABASE IF NOT EXISTS `phpmyadmin`;
+USE `phpmyadmin`;
+```
+
+### Step 4: Import phpMyAdmin Tables
+
+1. In phpMyAdmin, select the `phpmyadmin` database
+2. Click on the "Import" tab
+3. Choose the file `create_tables.sql` from your phpMyAdmin installation directory (that is, `Wampoon/apps/phpmyadmin/`)
+4. Click "Go" to import the tables
+
+Alternatively, you can run this SQL script directly:
+
+```sql
+-- Import the create_tables.sql file located in:
+-- apps/phpmyadmin/sql/create_tables.sql
+```
+
+### Step 5: Restart Services
+
+1. Stop Apache and MariaDB services in Wampoon
+2. Start Apache and MariaDB services again
+3. Access phpMyAdmin to verify the configuration
+
+### Step 6: Verify Advanced Features
+
+Once configured, you'll have access to:
+
+- **Bookmarks**: Save frequently used SQL queries
+- **Relations**: Define relationships between tables
+- **Designer**: Visual database design tool
+- **Tracking**: Track changes to database structure and data
+- **User preferences**: Customizable interface settings
+- **Recent tables**: Quick access to recently used tables
+- **Favorite tables**: Mark tables as favorites for easy access
+- **Query history**: Access previously executed queries
+- **Export templates**: Save export configurations for reuse
+
+:::tip[Troubleshooting]
+If you encounter issues:
+1. Ensure MariaDB is running and accessible
+2. Check that the `phpmyadmin` database exists
+3. Verify all required tables are present in the `phpmyadmin` database
+4. Clear your browser cache and restart phpMyAdmin
+:::
