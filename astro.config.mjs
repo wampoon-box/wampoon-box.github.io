@@ -30,7 +30,7 @@ export default defineConfig({
         {
           label: "Getting Started",
           items: [
-            { label: "Getting Started", slug: "getting-started" },
+            { label: "Installation", slug: "getting-started" },
             { label: "Installing Wampoon on a USB", slug: "guides/wampoon-usb" },
             { label: "Troubleshooting", slug: "guides/troubleshooting" },            
           ],
