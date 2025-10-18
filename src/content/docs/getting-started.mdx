@@ -7,12 +7,18 @@ import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
 Welcome to Wampoon! This guide will help you get started with the Wampoon local development stack.
 
+## What is Wampoon?
+
+Wampoon is a complete, fully portable local development environment for Windows that bundles Apache, MariaDB, and PHP (along with essential tools like phpMyAdmin, Composer, and Xdebug) into a single, easy-to-use package. It's designed to get you up and running with web development quickly, without complex configuration or system-wide installations.
+
 ## Installing Wampoon
 
 Depending on your preference, Wampoon can be installed in **two different ways**, either using the Wampoon Installer or the Wampoon Portable Bundle.
 
-:::caution[Prerequisites]
-Operating System: Windows 10 or Windows 11
+:::caution[System Requirements]
+- **Operating System:** Windows 10 or Windows 11
+- **Disk Space:** At least 800MB of free space
+- **Network:** Ports 80, 443, and 3306 should be available (not used by other applications)
 :::
 
 
@@ -28,7 +34,7 @@ This option provides a guided setup process.
 3. Run **`Wampoon-Installer.exe`** to launch the installer and follow the instructions.
 
 :::note[phpMyAdmin Advanced Features]
-The installer does not enable phpMyAdmin's advanced features. These features must be enabled manually by following the [phpMyAdmin configuration guide](/guides/phpmyadmin).
+The installer does not enable phpMyAdmin's advanced features (such as bookmarks, PDF generation, designer mode, and relation tracking). These features require additional database setup and can be enabled manually by following the [phpMyAdmin configuration guide](/guides/phpmyadmin). Most users won't need these features for basic database management.
 :::
 
 ---
@@ -59,3 +65,41 @@ The portable bundle comes preconfigured with the following components:
 * **Composer** — 2.8.10.0
 * **Microsoft Visual C++ Runtime** — 14.0.0.0
 * **browscap** — latest
+
+:::note[Component Versions]
+Component versions listed above are current as of the latest release. Check the [GitHub Releases page](https://github.com/wampoon-box/wampoon-installer/releases) for the most up-to-date version information.
+:::
+
+---
+
+## Verifying Your Installation
+
+After installing Wampoon, follow these steps to verify everything is working correctly:
+
+1. **Launch the Control Panel:**
+   - Run **`WampoonControl.exe`** from your Wampoon installation folder
+   - The control panel window should open without errors
+
+2. **Start Services:**
+   - In the control panel, start Apache and MariaDB services
+   - Both services should show a "Running" status (usually indicated by a green icon)
+
+3. **Test Apache:**
+   - Open your web browser and navigate to `http://localhost`
+   - You should see the Wampoon Dashboard welcome page
+
+4. **Access the Wampoon Dashboard:**
+   - The dashboard provides quick links to phpMyAdmin and PHP info
+   - Navigate to `http://localhost` to access the dashboard
+   - Click on the **phpMyAdmin** link to verify database access
+   - Click on the **PHP Info** link to verify PHP configuration and extensions
+
+If all these steps complete successfully, your Wampoon installation is ready to use!
+
+---
+
+## Next Steps
+
+Wampoon is now ready to use! Check out the [Usage Guide](/guides/usage) to learn how to create projects, configure PHP, manage databases, and set up virtual hosts.
+
+If you encounter any issues, see the [Troubleshooting Guide](/guides/troubleshooting) for help.

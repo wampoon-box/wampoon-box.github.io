@@ -1,0 +1,49 @@
+---
+title: "Usage Guide"
+description: "Learn how to use Wampoon Box for web development"
+sidebar:
+  label: "Usage Guide"
+  order: 1
+---
+
+This guide covers the essential tasks for using Wampoon Box in your daily web development workflow.
+
+## Creating Projects
+
+Place your web projects in the `htdocs` folder within your Wampoon installation directory:
+
+1. Create a new folder: `htdocs/myproject`
+2. Add your project files (HTML, PHP, etc.)
+3. Access via `http://localhost/myproject`
+
+## Configuring PHP
+
+Edit `php.ini` in the `apps/php/` folder within your Wampoon installation to modify PHP settings:
+
+- Common settings: `upload_max_filesize`, `post_max_size`, `memory_limit`
+- Restart Apache after making changes from the Wampoon Control Panel
+
+## Managing Databases
+
+**Using phpMyAdmin:**
+- Access via the Wampoon Dashboard at `http://localhost`
+- Click the phpMyAdmin link to create and manage databases
+
+**Using MySQL Command Line:**
+- Run `mysql.bat` from Wampoon's root directory to configure MariaDB environment variables
+- This opens a command prompt with the correct environment settings
+- Useful for running SQL scripts or advanced database operations
+
+## Setting Up Virtual Hosts
+
+Configure virtual hosts to use custom domain names in the `apps/apache/conf/extra/vhosts.conf` file:
+
+1. Edit the `apps/apache/conf/extra/vhosts.conf` file
+2. Add entries for your custom domains (e.g., `myproject.localhost`)
+3. Restart Apache from the Wampoon Control Panel
+
+## Additional Features
+
+- **phpMyAdmin Advanced Features:** Follow the [phpMyAdmin guide](/guides/phpmyadmin) to enable bookmarks, PDF generation, and more
+- **Xdebug:** Pre-installed and ready for debugging PHP applications
+- **Composer:** Available for managing PHP dependencies

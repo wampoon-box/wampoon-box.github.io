@@ -1,0 +1,53 @@
+---
+title: "Troubleshooting"
+description: "Common issues and solutions for Wampoon Box"
+sidebar:
+  label: "Troubleshooting"
+  order: 10
+---
+
+If you encounter issues during or after installation, try these common solutions:
+
+## Services Won't Start
+
+**Port Conflicts:**
+- **Problem:** Apache or MariaDB fails to start
+- **Solution:** Check if ports 80, 443 (Apache) or 3306 (MariaDB) are already in use by other applications
+- **How to check:** Use the command `netstat -ano | findstr :80` in Command Prompt to see which process is using port 80
+- **Common culprits:** Skype, IIS, other web servers, or existing MySQL installations
+
+## Firewall or Antivirus Blocking
+
+**Blocked Executables:**
+- **Problem:** Windows Firewall or antivirus software blocks Wampoon components
+- **Solution:** Add exceptions for `httpd.exe` (Apache) and `mysqld.exe` (MariaDB) in your security software
+- **Note:** Some antivirus programs may quarantine these files; restore them and add them to the whitelist
+
+## Cannot Access http://localhost
+
+**Service Not Running:**
+- **Problem:** Browser shows "connection refused" or "site can't be reached"
+- **Solution:** Verify Apache is running in the Wampoon Control Panel
+- **Alternative:** Try `http://127.0.0.1` instead of `http://localhost`
+
+## Permission Issues
+
+**Access Denied Errors:**
+- **Problem:** Cannot write files or modify configuration
+- **Solution:** Run `WampoonControl.exe` as Administrator (right-click > Run as administrator)
+- **Note:** On some systems, you may need to install Wampoon in a non-system directory (outside of `C:\Program Files`)
+
+## Visual C++ Runtime Errors
+
+**Missing DLL Files:**
+- **Problem:** Error messages about missing `VCRUNTIME140.dll` or similar
+- **Solution:** The portable bundle includes Visual C++ Runtime, but you may need to install it manually
+- **Download:** [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)
+
+## Need More Help?
+
+If you continue to experience issues:
+- Check the logs in the `logs` folder within your Wampoon installation directory
+- Review Apache error logs: `logs/apache_error.log`
+- Review MariaDB error logs: `logs/mysql_error.log`
+- Visit the [GitHub Issues page](https://github.com/wampoon-box/wampoon-installer/issues) to report problems or search for solutions
