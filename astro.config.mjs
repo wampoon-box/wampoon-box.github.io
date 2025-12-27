@@ -46,11 +46,7 @@ export default defineConfig({
             { label: "Wampoon Dashboard", slug: "guides/wampoon-dashboard" },
             { label: "Wampoon Installer", slug: "guides/wampoon-installer" },
           ],
-        },
-        {
-          label: "Reference",
-          autogenerate: { directory: "reference" },
-        },
+        },        
       ],
     }),
   ],

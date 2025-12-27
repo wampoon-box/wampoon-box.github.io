@@ -1,18 +1,96 @@
 ---
-title: Using the Wampoon Installer
-description: A guide to the Wampoon Installer.
+title: Wampoon Installer
+description: Learn how to use the Wampoon Installer to set up your development environment.
 ---
 
-# Wampoon Installer
+The Wampoon Installer is a desktop application that downloads and configures the Wampoon stack on your machine. For basic installation steps, see the [Installation guide](/getting-started/#using-the-installer).
 
-The Wampoon Installer is a desktop application that allows you to install and configure the Wampoon stack.
+{/* ![Wampoon Installer](../../../assets/wampoon-ui/wampoon-installer.png) */}
 
-:::danger[To be completed]
-- This guide is to be completed soon with instructions on how to use and configure the Wampoon Installer.
-:::
+## Package Sources
 
-{/* 
-![Wampoon Installer](../../../assets/wampoon-ui/wampoon-installer.png)   */}
+The installer can fetch component versions from different sources:
+
+| Source | Description |
+|--------|-------------|
+| Web Manifest (default) | Downloads the latest versions from the [remote manifest](https://github.com/wampoon-box/wampoon-packages/blob/main/packagesInfo.json) |
+| Local File | Uses a local `packagesInfo.json` file for offline or pinned installs |
+| Auto | Tries the web manifest first, falls back to local if unavailable |
+
+You can switch between sources using the **Package Source** dropdown in the installer window.
+
+---
+
+## Using a Local Manifest
+
+If you need to install specific versions or work offline, you can use a local manifest file.
+
+### Setup
+
+1. Open the `Data` folder next to `Wampoon-Installer.exe`
+2. Edit the `packagesInfo.json` file with your desired package versions
+3. In the installer, select **Local File Only** from the Package Source dropdown
+
+### File Format
+
+The manifest is a JSON array of package definitions:
+
+```json
+[
+  {
+    "PackageID": 1,
+    "Name": "Apache HTTP Server",
+    "Version": "2.4.65.0",
+    "DownloadUrl": "https://www.apachelounge.com/download/VS17/binaries/httpd-2.4.65-250724-Win64-VS17.zip",
+    "PackageWebsite": "https://www.apachelounge.com/download/",
+    "Checksum": ""
+  },
+  {
+    "PackageID": 4,
+    "Name": "PHP Runtime",
+    "Version": "8.5.1.0",
+    "DownloadUrl": "https://downloads.php.net/~windows/releases/archives/php-8.5.1-Win32-vs17-x64.zip",
+    "PackageWebsite": "https://windows.php.net/download/",
+    "Checksum": ""
+  }
+]
+```
+
+For a complete example, see the [remote manifest file](https://github.com/wampoon-box/wampoon-packages/blob/main/packagesInfo.json).
+
+### Package IDs
+
+| ID | Component | Download Page |
+|----|-----------|---------------|
+| 1 | Apache HTTP Server | [apachelounge.com](https://www.apachelounge.com/download/) |
+| 2 | MariaDB Server | [mariadb.org](https://mariadb.org/download/) |
+| 4 | PHP Runtime | [windows.php.net](https://windows.php.net/download/) |
+| 5 | phpMyAdmin | [phpmyadmin.net](https://www.phpmyadmin.net/downloads/) |
+| 6 | Wampoon Dashboard | [GitHub Releases](https://github.com/wampoon-box/wampoon-dashboard/releases) |
+| 7 | Wampoon Control Panel | [GitHub Releases](https://github.com/wampoon-box/wampoon-control/releases) |
+| 8 | Xdebug | [xdebug.org](https://xdebug.org/download) |
+| 9 | Composer | [getcomposer.org](https://getcomposer.org/download/) |
+| 10 | Microsoft Visual C++ Runtime | [Microsoft Docs](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) |
+
+---
+
+## Troubleshooting
+
+### "Failed to load packages from web manifest"
+
+- Check your internet connection
+- Make sure GitHub is accessible from your network
+- Switch to **Local File Only** as a fallback
+
+### "Failed to load packages from local file"
+
+- Verify `Data/packagesInfo.json` exists next to the installer
+- Check the JSON syntax is valid
+- Make sure all required fields are present (PackageID, Name, Version, DownloadUrl)
+
+### "Manifest URL is not allowed"
+
+The installer only accepts manifest URLs from GitHub domains (`raw.githubusercontent.com`, `github.com`, `api.github.com`) over HTTPS.
 
 
 

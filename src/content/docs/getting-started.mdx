@@ -6,7 +6,7 @@ sidebar:
   order: 1
 ---
 
-import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
+import { Steps, Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
 :::caution[System Requirements]
 - Windows 10 or Windows 11
@@ -18,12 +18,13 @@ import { Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
 The portable bundle is the easiest way to get started. It's pre-configured and works out of the box on all Windows versions.
 
-1. Download the portable archive:
-<LinkButton href="https://github.com/wampoon-box/wampoon-installer/releases/latest/download/wampoon-portable-v1.1.0.zip" variant="primary" icon="external" iconPlacement="end">
-  wampoon-portable-v1.1.0.zip
-</LinkButton>
+<Steps>
+
+1. Download the portable archive: <LinkButton href="https://github.com/wampoon-box/wampoon-installer/releases/latest/download/wampoon-portable-v1.1.0.zip" variant="primary" icon="external" iconPlacement="end"> wampoon-portable-v1.1.0.zip </LinkButton>
 2. Extract the ZIP file to any folder.
 3. Run `WampoonControl.exe` to open the control panel.
+
+</Steps>
 
 ---
 
@@ -31,12 +32,13 @@ The portable bundle is the easiest way to get started. It's pre-configured and w
 
 If you prefer a guided setup, you can use the installer instead.
 
-1. Download the installer:
-<LinkButton href="https://github.com/wampoon-box/wampoon-installer/releases/latest/download/Wampoon-Installer-v1.1.0.zip" variant="primary" icon="external" iconPlacement="end">
-  Wampoon-Installer.zip
-</LinkButton>
+<Steps>
+
+1. Download the installer: <LinkButton href="https://github.com/wampoon-box/wampoon-installer/releases/latest/download/Wampoon-Installer-v1.1.0.zip" variant="primary" icon="external" iconPlacement="end"> Wampoon-Installer.zip </LinkButton>
 2. Extract the ZIP file and run `Wampoon-Installer.exe`.
 3. Follow the on-screen instructions.
+
+</Steps>
 
 :::note[phpMyAdmin Advanced Features]
 The installer doesn't enable phpMyAdmin's advanced features (bookmarks, PDF generation, designer mode, relation tracking). These require additional setup — see the [phpMyAdmin configuration guide](/guides/phpmyadmin) if you need them.
