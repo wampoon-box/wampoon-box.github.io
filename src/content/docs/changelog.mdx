@@ -1,0 +1,69 @@
+---
+title: Changelog
+description: Release history and changes for Wampoon.
+---
+
+
+## [1.1.0] - 2025-12-26
+
+### Added
+
+**HTTPS/SSL Support (Port 443)**
+- SSL/TLS support for serving sites over HTTPS
+- Self-signed SSL certificates are automatically generated during installation using Apache's bundled OpenSSL
+- Certificates are valid for 10 years and cover `localhost`, `*.localhost`, and `127.0.0.1`
+- New configuration file: `httpd-wampoon-ssl.conf` in `apache/conf/extra/`
+- Enabled `mod_ssl` and `mod_socache_shmcb` Apache modules
+- Modern SSL protocols (TLS 1.2+) with secure cipher suites
+- SSL logs stored in `apps/temp/apache_logs/`
+
+**New Scripts**
+- Added `apache.bat` wrapper script for starting Apache with proper environment configuration
+- Added `composer.bat` to the `htdocs` directory for easy dependency management in projects
+
+### Changed
+
+**Package Upgrades**
+
+| Component | Version |
+|-----------|---------|
+| MariaDB Server | 11.8.5.0 |
+| PHP Runtime | 8.5.1.0 |
+| phpMyAdmin | 5.2.3.0 |
+| Wampoon Dashboard | 1.1.0 |
+| Wampoon Control Panel | 1.1.0 |
+| Composer | 2.9.2.0 |
+
+### Fixed
+
+**PHP Curl Extension**
+- Fixed curl extension not loading in Apache by reordering `LoadFile` directives to load before `LoadModule php_module`
+- Added required dependency DLLs: `libcrypto`, `libssl`, `libssh2`, `libsodium`, `libpq`, `libsqlite3`, and ICU libraries
+
+**OpenSSL Configuration Path**
+- Fixed PHP's OpenSSL showing incorrect default config path (`C:\Apache24\conf\openssl.cnf`)
+- `OPENSSL_CONF` environment variable is now set automatically when starting Apache via the `apache.bat` script or the Wampoon Control Panel
+
+**SSL Certificate Generation**
+- Fixed certificate generation failing due to missing `-config` flag for OpenSSL
+
+---
+
+## [1.0.0] - 2025-08-19
+
+Initial public release.
+
+### Components
+
+| Component | Version |
+|-----------|---------|
+| Apache HTTP Server | 2.4.65.0 |
+| MariaDB Server | 11.8.3.0 |
+| PHP Runtime | 8.4.10.0 |
+| phpMyAdmin | 5.2.2.0 |
+| Wampoon Dashboard | 0.1.1.0 |
+| Wampoon Control Panel | 0.1.0.0 |
+| Xdebug | 3.4.5.0 |
+| Composer | 2.8.10.0 |
+| Microsoft Visual C++ Runtime | 14.0.0.0 |
+| browscap | latest |

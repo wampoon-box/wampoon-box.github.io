@@ -33,14 +33,16 @@ export default defineConfig({
             { label: "Introduction", slug: "introduction" },
             { label: "Installation", slug: "getting-started" },
             { label: "Installing Wampoon on a USB", slug: "guides/wampoon-usb" },
-            { label: "Troubleshooting", slug: "guides/troubleshooting" },            
+            { label: "Troubleshooting", slug: "guides/troubleshooting" },
+            { label: "Changelog", slug: "changelog" },
           ],
         },
         {
           label: "Guides",
           items: [
-            // { label: "Guides", slug: "guides/index" },            
+            // { label: "Guides", slug: "guides/index" },
             { label: "Usage Guide", slug: "guides/usage" },
+            { label: "Using Composer", slug: "guides/composer" },
             { label: "Configuring phpMyAdmin", slug: "guides/phpmyadmin" },
             { label: "Wampoon Control Panel", slug: "guides/wampoon-control" },
             { label: "Wampoon Dashboard", slug: "guides/wampoon-dashboard" },

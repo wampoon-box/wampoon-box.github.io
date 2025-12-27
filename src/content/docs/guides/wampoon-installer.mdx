@@ -1,6 +1,8 @@
 ---
 title: Wampoon Installer
 description: Learn how to use the Wampoon Installer to set up your development environment.
+sidebar:
+  order: 1
 ---
 
 The Wampoon Installer is a desktop application that downloads and configures the Wampoon stack on your machine. For basic installation steps, see the [Installation guide](/getting-started/#using-the-installer).
@@ -27,9 +29,9 @@ If you need to install specific versions or work offline, you can use a local ma
 
 ### Setup
 
-1. Open the `Data` folder next to `Wampoon-Installer.exe`
-2. Edit the `packagesInfo.json` file with your desired package versions
-3. In the installer, select **Local File Only** from the Package Source dropdown
+1. Open the `Data` folder next to `Wampoon-Installer.exe` in the Wampoon installer directory.
+2. Edit the `packagesInfo.json` file with your desired package versions. Update the `Version` field and replace any outdated or dead download URLs in the `DownloadUrl` field with working links. See the [package IDs](#package-ids) table for the download pages where you can find current versions.
+3. In the installer, select **Local File Only** from the Package Source dropdown.
 
 ### File Format
 

@@ -1,0 +1,115 @@
+---
+title: Using Composer with Wampoon
+description: Learn how to use the portable Composer bundled with Wampoon.
+---
+
+Wampoon includes a fully portable version of Composer that works without global installation. Since Wampoon is portable, it provides batch scripts that configure the PHP path before running Composer.
+
+:::caution[Don't Use Global PHP/Composer]
+Always use Wampoon's `composer.bat` and `php.bat` scripts instead of any globally installed PHP or Composer. This ensures the correct PHP version and extensions are used.
+:::
+
+:::note[Example Paths]
+The examples on this page use `C:\Wampoon` as the installation directory. Replace this with the actual path where you extracted Wampoon.
+:::
+
+## Available Scripts
+
+Wampoon provides batch scripts that configure the PHP path before running Composer:
+
+| Script | Location | Description |
+|--------|----------|-------------|
+| `composer.bat` | `htdocs/` | Convenient script for managing projects in htdocs |
+| `composer.bat` | Root folder | Runs Composer with the correct PHP path |
+| `php.bat` | Root folder | Runs PHP with the correct environment |
+
+## Using Composer
+
+To use Composer, open a command prompt and navigate to the `htdocs` folder, then run commands using `composer.bat`:
+
+```batch
+cd C:\Wampoon\htdocs
+composer.bat install
+```
+
+Or use the full path from any location:
+
+```batch
+C:\Wampoon\htdocs\composer.bat --working-dir=C:\Wampoon\htdocs\my-project install
+```
+
+### Common Commands
+
+If you have multiple projects in `htdocs`, navigate to your project directory first:
+
+```batch
+cd C:\Wampoon\htdocs\my-project
+
+:: Install dependencies from composer.json
+composer.bat install
+
+:: Add a package
+composer.bat require vendor/package
+
+:: Update all packages
+composer.bat update
+```
+
+---
+
+## Creating a New Project
+
+Use the `composer create-project` command to scaffold new applications directly in your `htdocs` folder.
+
+### From the htdocs Folder
+
+Open a command prompt in `htdocs` and run:
+
+```batch
+cd C:\Wampoon\htdocs
+composer.bat create-project laravel/laravel my-laravel-app
+```
+
+### Popular Frameworks
+
+```batch
+:: Laravel
+composer.bat create-project laravel/laravel my-app
+
+:: Symfony
+composer.bat create-project symfony/skeleton my-app
+
+:: Slim Framework
+composer.bat create-project slim/slim-skeleton my-app
+
+:: CakePHP
+composer.bat create-project cakephp/app my-app
+```
+
+After creating a project, access it at `http://localhost/my-app` (or the appropriate entry point for your framework).
+
+## Using PHP Directly
+
+If you need to run PHP scripts directly, use `php.bat` from the root folder:
+
+```batch
+C:\Wampoon\php.bat -v
+C:\Wampoon\php.bat script.php
+```
+
+---
+
+## Adding to PATH (Optional)
+
+If you frequently use Composer from the command line, you can add the Wampoon folder to your PATH environment variable for the current session:
+
+```batch
+set PATH=C:\Wampoon;%PATH%
+```
+
+Then you can run commands directly:
+
+```batch
+composer.bat install
+php.bat -v
+```
