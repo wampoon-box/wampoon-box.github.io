@@ -1,0 +1,279 @@
+---
+title: Using the Wampoon Installer
+description: A guide to the Wampoon Installer.
+draft: true
+---
+
+# Package Information System
+
+## Overview
+
+The Wampoon Installer supports multiple package sources to provide flexibility for different deployment scenarios. You can choose to:
+
+- Use the latest package versions from a remote web manifest (default)
+- Use locally specified package versions for version control and reproducible builds
+- Let the installer automatically select the best available source
+
+## Package Source Options
+
+The installer provides three package source modes:
+
+### 1. Auto (Local → Web) - Default Fallback
+
+Attempts to load from the web manifest first, then falls back to the local file if the web request fails. This provides resilience when network connectivity is unreliable.
+
+### 2. Local File Only (Version Control)
+
+Uses only the local `packagesInfo.json` file. This mode is ideal for:
+- Version-controlled installations
+- Reproducible builds
+- Offline installations
+- Testing specific package versions
+
+### 3. Web Manifest Only (Latest Versions) - Recommended
+
+Uses only the remote web manifest to get the latest available package versions. This ensures you always install the most recent versions of all components.
+
+**Default Remote URL:**
+```
+https://raw.githubusercontent.com/wampoon-box/wampoon-packages/refs/heads/main/packagesInfo.json
+```
+
+## Local Package Information File
+
+### Location
+
+The local package information is stored in:
+```
+src/Wampoon.Installer/Data/packagesInfo.json
+```
+
+### Purpose
+
+This file allows you to:
+- Specify exact versions of packages to install
+- Customize download URLs for specific packages
+- Create repeatable installations with pinned versions
+- Work offline or in environments with restricted internet access
+
+### File Structure
+
+The `packagesInfo.json` file contains an array of package definitions:
+
+```json
+[
+  {
+    "PackageID": 1,
+    "Name": "Apache HTTP Server",
+    "Version": "2.4.65.0",
+    "DownloadUrl": "https://www.apachelounge.com/download/VS17/binaries/httpd-2.4.65-250724-Win64-VS17.zip",
+    "Checksum": ""
+  },
+  {
+    "PackageID": 2,
+    "Name": "MariaDB Server",
+    "Version": "11.8.3.0",
+    "DownloadUrl": "https://mirrors.accretive-networks.net/mariadb/mariadb-11.8.3/winx64-packages/mariadb-11.8.3-winx64.zip",
+    "Checksum": ""
+  },
+  {
+    "PackageID": 9,
+    "Name": "Composer",
+    "Version": "2.8.10.0",
+    "DownloadUrl": "https://getcomposer.org/download/2.8.10/composer.phar",
+    "ArchiveFormat": "phar",
+    "Checksum": ""
+  }
+]
+```
+
+### Package Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `PackageID` | Yes | Unique identifier for the package (1-10) |
+| `Name` | Yes | Display name of the package |
+| `Version` | Yes | Version number in format `X.X.X.X` |
+| `DownloadUrl` | Yes | Direct download URL for the package |
+| `ArchiveFormat` | No | Archive format (defaults to "zip", can be "phar") |
+| `Checksum` | No | SHA256 checksum for download verification (optional) |
+
+### Available Packages
+
+The following packages are supported:
+
+1. **Apache HTTP Server** - Web server
+2. **MariaDB Server** - Database server
+4. **PHP Runtime** - PHP interpreter
+5. **phpMyAdmin** - Database management interface
+6. **wampoon-dashboard** - Wampoon web dashboard
+7. **Wampoon Control Panel** - System tray control application
+8. **Xdebug** - PHP debugging extension
+9. **Composer** - PHP dependency manager
+10. **Microsoft Visual C++ Runtime** - Required runtime libraries
+
+## Custom Configuration File (Advanced)
+
+### Optional config.json
+
+You can create an optional `config.json` file in the same directory as the installer executable to override the default remote manifest URL:
+
+```json
+{
+  "manifestUrl": "https://your-custom-domain.com/path/to/packagesInfo.json"
+}
+```
+
+### Security Restrictions
+
+For security, the installer only accepts manifest URLs from whitelisted domains:
+- `raw.githubusercontent.com`
+- `github.com`
+- `api.github.com`
+
+URLs must use HTTPS protocol.
+
+## How to Switch Package Sources
+
+### Using the User Interface
+
+1. Launch the Wampoon Installer
+2. Locate the **Package Source** dropdown menu in the main window
+3. Select your preferred source:
+   - **🔄 Auto (Local → Web)** - Automatic fallback
+   - **📁 Local File Only (Version Control)** - Use local file only
+   - **🌐 Web Manifest Only (Latest Versions)** - Use remote manifest only
+4. The installer will reload packages from the selected source
+
+### Programmatic Access
+
+The package source preference is stored in `UserSettings.Instance.PackageSource` and uses the `PackageSource` enum:
+
+```csharp
+public enum PackageSource
+{
+    Auto = 0,        // Default: Try web first, then local
+    LocalOnly = 1,   // Use only packagesInfo.json file
+    WebOnly = 2      // Use only GitHub web manifest
+}
+```
+
+**Related Code:**
+- Source selection UI: `src/Wampoon.Installer/Source/UI/MainForm.cs:79-109`
+- Package loading logic: `src/Wampoon.Installer/Source/Core/PackageRepository.cs:35-100`
+- Package source enum: `src/Wampoon.Installer/Source/Core/PackageSource.cs`
+
+## Use Cases
+
+### Scenario 1: Production Deployment (Recommended)
+
+**Source:** Web Manifest Only
+
+Use the web manifest to always get the latest stable versions with security patches and bug fixes.
+
+### Scenario 2: Development & Testing
+
+**Source:** Local File Only
+
+Pin specific versions in `packagesInfo.json` and commit to version control. This ensures all developers use identical package versions.
+
+Example workflow:
+```bash
+# 1. Edit packagesInfo.json with desired versions
+# 2. Commit to version control
+git add src/Wampoon.Installer/Data/packagesInfo.json
+git commit -m "Pin Apache to 2.4.65.0 for testing"
+
+# 3. Team members pull and install with consistent versions
+```
+
+### Scenario 3: Offline Installation
+
+**Source:** Local File Only
+
+Prepare the `packagesInfo.json` file beforehand with URLs to locally hosted or mirrored packages, then install without internet access.
+
+### Scenario 4: Unreliable Network
+
+**Source:** Auto
+
+The installer will attempt to fetch the latest versions from the web, but gracefully fall back to the local file if the network is unavailable.
+
+## Package Loading Flow
+
+```
+User Selects Package Source
+         │
+         ├─ LocalOnly
+         │    └─→ Load from ./Data/packagesInfo.json
+         │        └─→ Error if file not found
+         │
+         ├─ WebOnly
+         │    └─→ Load from GitHub manifest URL
+         │        └─→ Error if download fails
+         │
+         └─ Auto
+              └─→ Try GitHub manifest first
+                  ├─→ Success: Use web packages
+                  └─→ Fail: Fallback to local file
+                      └─→ Error if both fail
+```
+
+## Security Considerations
+
+### URL Validation
+
+All manifest URLs are validated before use:
+- Must use HTTPS protocol
+- Must be from whitelisted domains
+- Prevents arbitrary URL injection
+
+**Implementation:** `src/Wampoon.Installer/Source/Core/PackageRepository.cs:143-152`
+
+### Download Verification
+
+While checksums are supported in the package manifest, they are currently optional. For enhanced security, you can add SHA256 checksums:
+
+```json
+{
+  "PackageID": 1,
+  "Name": "Apache HTTP Server",
+  "Version": "2.4.65.0",
+  "DownloadUrl": "https://...",
+  "Checksum": "sha256-hash-here"
+}
+```
+
+## Troubleshooting
+
+### "Failed to load packages from web manifest"
+
+**Solutions:**
+1. Check your internet connection
+2. Verify the GitHub repository is accessible
+3. Switch to "Local File Only" mode as a fallback
+4. Check firewall/proxy settings
+
+### "Failed to load packages from local file"
+
+**Solutions:**
+1. Verify `Data/packagesInfo.json` exists in the installer directory
+2. Validate the JSON syntax (use a JSON validator)
+3. Ensure all required fields are present
+4. Check file permissions
+
+### "Manifest URL is not allowed"
+
+**Solutions:**
+1. Ensure the URL uses HTTPS
+2. Verify the domain is in the whitelist
+3. If using custom URL, it must be from GitHub domains
+
+## Related Files
+
+- Package manifest: `/src/Wampoon.Installer/Data/packagesInfo.json`
+- Package repository: `/src/Wampoon.Installer/Source/Core/PackageRepository.cs`
+- Package source enum: `/src/Wampoon.Installer/Source/Core/PackageSource.cs`
+- Main form UI: `/src/Wampoon.Installer/Source/UI/MainForm.cs`
+- User settings: `/src/Wampoon.Installer/Source/Core/UserSettings.cs`
+- Constants: `/src/Wampoon.Installer/Source/Core/InstallerConstants.cs`
