@@ -5,16 +5,31 @@
 <header>
   <nav class="container">
     <a href="/" class="logo">Wampoon</a>
+
+    <!-- Mobile menu button -->
+    <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
     <ul class="nav-links">
       <li><a href="/getting-started/">Getting Started</a></li>
       <li><a href="/guides/wampoon-control/">Guides</a></li>
       <li>
         <a href="https://github.com/wampoon-box/" class="external-link" target="_blank" rel="noopener noreferrer">
-          GitHub <span class="external-icon">↗</span>
+          GitHub
+          <svg class="external-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 `2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" x2="21" y1="14" y2="3"/>
+          </svg>
         </a>
       </li>
-      <li class="tooltip">
-        <button class="theme-toggle">🗑️</button>
+      <li class="tooltip theme-toggle-item">
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+        </button>
         <span class="tooltip-text" id="tooltip-text">
           <span class="raccoon-emoji">🦝</span> Send raccoon to bed
         </span>
@@ -23,13 +38,71 @@
   </nav>
 </header>
 
-<style>
+<script>
+  // Mobile menu toggle
+  const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+  const navLinks = document.querySelector('.nav-links') as HTMLElement;
+
+  // Get background color based on current theme
+  function getMenuBgColor() {
+    const theme = document.body.getAttribute('data-theme') || 'dark';
+    return theme === 'light' ? '#f8f8f2' : '#1c1c1e';
+  }
+
+  // Update background only when menu is open
+  function updateMenuBackground() {
+    if (navLinks?.classList.contains('open')) {
+      navLinks.style.setProperty('background', getMenuBgColor(), 'important');
+    }
+  }
+
+  if (mobileMenuBtn && navLinks) {
+    mobileMenuBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      mobileMenuBtn.classList.toggle('open');
+      mobileMenuBtn.setAttribute('aria-expanded', isOpen.toString());
+
+      if (isOpen) {
+        navLinks.style.setProperty('background', getMenuBgColor(), 'important');
+      } else {
+        navLinks.style.removeProperty('background');
+      }
+    });
+
+    // Close menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        navLinks.style.removeProperty('background');
+        mobileMenuBtn.classList.remove('open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Update background color on theme change (only if menu is open)
+    const observer = new MutationObserver(updateMenuBackground);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+
+    // Close menu on resize to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) {
+        navLinks.classList.remove('open');
+        navLinks.style.removeProperty('background');
+        mobileMenuBtn.classList.remove('open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+</script>
+
+<style is:global>
   header {
     padding: 1rem 0;
     background: color-mix(in srgb, var(--color-background) 90%, transparent);
-    backdrop-filter: blur(10px);
-    position: relative;
-    z-index: 10;
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -40,11 +113,18 @@
   }
 
   .logo {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--color-text);
     text-decoration: none;
-    text-shadow: 0 2px 8px rgba(58, 143, 208, 0.3);
+    font-family: var(--font-display);
+    letter-spacing: -0.5px;
+    transition: color 0.2s ease;
+    z-index: 101;
+  }
+
+  .logo:hover {
+    color: var(--color-primary);
   }
 
   .nav-links {
@@ -58,47 +138,155 @@
     color: var(--color-text);
     text-decoration: none;
     font-weight: 600;
-    transition: all 0.3s;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-primary);
+    transition: width 0.2s ease;
   }
 
   .nav-links a:hover {
     color: var(--color-primary);
   }
 
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .external-link::after {
+    display: none;
+  }
+
   .external-icon {
-    font-size: 0.9rem;
-    margin-left: 0.3rem;
-    opacity: 0.7;
-    transition: all 0.3s;
+    opacity: 0.6;
+    transition: all 0.2s ease;
   }
 
   .external-link:hover .external-icon {
     opacity: 1;
-    transform: translateY(-1px);
+    transform: translate(2px, -2px);
   }
 
   .theme-toggle {
     background: var(--color-card);
     border: 1px solid var(--color-border);
     color: var(--color-text);
-    font-size: 1.2rem;
     cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: all 0.3s;
-    margin-left: 1rem;
-    position: relative;
+    padding: 0.6rem;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .theme-toggle:hover {
     background: var(--color-primary);
+    border-color: var(--color-primary);
     color: white;
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
+  /* Mobile menu button */
+  .mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 101;
+  }
+
+  .hamburger-line {
+    width: 100%;
+    height: 2px;
+    background: var(--color-text);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu-btn.open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .mobile-menu-btn.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-btn.open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* Mobile styles */
   @media screen and (max-width: 768px) {
-    .nav-links {
+    .mobile-menu-btn {
+      display: flex;
+    }
+
+    ul.nav-links {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - 60px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 2rem;
+      padding-top: 3rem;
+      z-index: 99;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      opacity: 1;
+    }
+
+    ul.nav-links.open {
+      transform: translateX(0);
+    }
+
+    ul.nav-links li {
+      display: block;
+      text-align: center;
+    }
+
+    ul.nav-links li a {
+      font-size: 1.5rem;
+      display: block;
+      padding: 0.5rem 1rem;
+    }
+
+    ul.nav-links li a::after {
       display: none;
+    }
+
+    .tooltip .tooltip-text {
+      display: none;
+    }
+
+    .logo {
+      font-size: 1.4rem;
     }
   }
 </style>

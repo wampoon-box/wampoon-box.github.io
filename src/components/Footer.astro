@@ -4,36 +4,49 @@
 
 <footer>
   <div class="container">
-    <p>&copy; 2025-present <a href="https://github.com/wampoon-box" target="_blank" rel="noopener noreferrer">Wampoon Box</a>. 
+    <p class="copyright">
+      &copy; 2025-present <a href="https://github.com/wampoon-box" target="_blank" rel="noopener noreferrer">Wampoon Box</a>
     </p>
-    <a href="https://starlight.astro.build" target="_blank" rel="noopener noreferrer">
-      <img src="https://astro.badg.es/v2/built-with-starlight/tiny.svg" alt="Built with Astro and Starlight" />
-    </a>
-  </p>
+    <div class="footer-paw" aria-hidden="true">🐾</div>
   </div>
 </footer>
 
 <style>
   footer {
-    background: #1a202c;
-    color: white;
+    background: var(--color-background-secondary);
+    color: var(--color-text);
     text-align: center;
-    padding: 3rem 0;
+    padding: 2.5rem 0;
+    border-top: 1px solid var(--color-border);
+    position: relative;
+  }
+
+  .copyright {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
   }
 
   footer a {
-    color: #60a5fa;
+    color: var(--color-primary);
     text-decoration: none;
-    transition: color 0.2s ease, text-decoration 0.2s ease;
+    transition: color 0.2s ease;
   }
 
   footer a:hover {
-    color: #93c5fd;
-    text-decoration: underline;
+    color: var(--color-secondary);
   }
 
-  footer a:focus {
-    outline: 2px solid #60a5fa;
-    outline-offset: 2px;
+  .footer-paw {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    font-size: 1.5rem;
+    opacity: 0.15;
+  }
+
+  @media screen and (max-width: 768px) {
+    .footer-paw {
+      display: none;
+    }
   }
 </style>
