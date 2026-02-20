@@ -9,5 +9,23 @@ The Wampoon Control Panel is a desktop application that allows you to manage Apa
 
 ![Wampoon Control Panel](../../../assets/wampoon-ui/wampoon-control.png)
 
+## Starting Servers from the Command Line
 
+You can pass flags to `WampoonControl.exe` to start servers automatically without interacting with the UI. Useful for scripting or scheduled tasks:
 
+```
+WampoonControl.exe --start-all        # Start both Apache and MariaDB
+WampoonControl.exe --start-apache     # Start Apache only
+WampoonControl.exe --start-mariadb    # Start MariaDB only
+```
+
+## Starting Servers on Windows Boot
+
+To have your servers start automatically every time you log into Windows:
+
+1. Press `Win + R`, type `shell:startup`, and press **Enter** to open the Startup folder.
+2. Create a shortcut to `WampoonControl.exe` in that folder.
+3. Right-click the shortcut → **Properties** → in the **Target** field, append `--start-all` after the executable path.
+4. Click **OK**.
+
+Next time you log in, both Apache and MariaDB will start automatically and the control panel will minimize quietly to the system tray.
